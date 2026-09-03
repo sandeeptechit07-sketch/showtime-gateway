@@ -73,11 +73,19 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image
-        uses: docker/build-push-action@v7
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            sandeep07k/showtime-gateway:latest
+            sandeep07k/showtime-gateway:${{ github.sha }}
+
+      - name: Trigger infrastructure deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          repository: sandeep07k/showtime-infrastructure
+          event-type: deploy-gateway
+          client-payload: '{"image_tag":"${{ github.sha }}"}'
