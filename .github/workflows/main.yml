@@ -86,6 +86,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.INFRA_REPO_TOKEN }}
-          repository: sandeep07k/showtime-infrastructure
+          repository: sandeeptechit07-sketch/showtime-infrastructure
           event-type: deploy-gateway
           client-payload: '{"image_tag":"${{ github.sha }}"}'
